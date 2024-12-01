@@ -6,7 +6,7 @@ import Register from './jsx/Register.jsx';
 import Test from './jsx/Test.jsx';
 import Admin from './jsx/admin.jsx';
 import Logout from './jsx/logout.jsx';
-export const URL = "http://localhost:5000/";
+export const URL = "https://9am-backend.vercel.app/";
 
 const App = () => {
     

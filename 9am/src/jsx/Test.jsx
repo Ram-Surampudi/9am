@@ -34,7 +34,7 @@ const EditableTable = () => {
   const handleInputChange = e => setNewRow({...newRow, [e.target.name] : e.target.value});
 
   const calculateBalance = (row , index) =>{
-      row.balance = (index ==0 ? balance : data[index-1].balance) - (parseInt(row?.debit) || 0) + (parseInt(row?.credit) || 0);
+      row.balance = (index ===0 ? balance : data[index-1].balance) - (parseInt(row?.debit) || 0) + (parseInt(row?.credit) || 0);
   };
   
   const handleInsert = (e) => {
@@ -120,7 +120,7 @@ const EditableTable = () => {
     }
   };
 
-  useEffect(()=>{getRecords();},[]);
+  useEffect(()=>{getRecords()},[]);
 
   return (
     <div>
@@ -219,7 +219,7 @@ const EditableTable = () => {
                 }
             </tr>
           ))}
-           <tr key={row._id} >
+           <tr key={"edit"} >
 
                 <td> <input className="tableinput" type="date" name="date" value={insertRow.date} onChange={set}/> </td>
                 <td> <input className="tableinput" type="text" name="description" value={insertRow.description} onChange={set}/> </td>
