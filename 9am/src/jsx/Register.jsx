@@ -1,15 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { URL } from '../App';
+import Loading from './Loading';
+import toast from 'react-hot-toast';
 
 const Register = () => {
 
   const [data, setData] = useState(null);
+  const [loading , setLoading] = useState(false);
   const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
   const fetchRecords = async ()=>{
+    setLoading(true);
     try{
        const res = await axios.get(`${URL}getregister`);
        res.data.sort((a, b) => {
@@ -22,8 +26,9 @@ const Register = () => {
     }
     catch(error){
        setData(null);
-       console.log(error);
+       toast.error("No Records Found");
     }
+    setLoading(false);
    }
 
    useEffect(()=>{
@@ -34,6 +39,7 @@ const Register = () => {
 
   return (
     <div>
+      {loading && <Loading/>}
       <h1  className="transcationstableh2" >Register</h1>
       <table>
         <thead>

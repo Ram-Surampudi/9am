@@ -222,7 +222,8 @@ app.post("/verifyandquery",authenticateToken, async (req, res) => {
 
 app.post("/adminlogin", (req, res)=>{
   console.log("called login");
-  
+    console.log(process.env.LOGIN_USERNAME);
+    
     if(req.body.username === process.env.LOGIN_USERNAME){
       if(req.body.password === process.env.PASSWORD){
         res.status(202).send(generateToken("ram_surampudi"));

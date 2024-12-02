@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import './css/records.css'
 import axios from 'axios';
 import { URL } from '../App';
+import Loading from './Loading';
+import toast from 'react-hot-toast';
 
 const Records = () => {
     const [year , setYear] = useState('2024');
     const [month , setMonth] = useState(new Date().getMonth()+1);
     const [data, setData] = useState(null);
     const [total, setTotal] = useState(0);
+    const [loading , setLoading] = useState(false);
 
     const getValue = value => value < 1 ? '-' : value;
 
@@ -16,7 +19,8 @@ const Records = () => {
     },[]);
 
     const fetchRecords = async ()=>{
-     try{
+      setLoading(true);
+      try{
         const res = await axios.post(`${URL}query`,{month,year});
         console.log(res);
         setData(res.data.transactions);
@@ -26,12 +30,14 @@ const Records = () => {
      }
      catch(error){
         setData(null);
-        console.log(error);
+        toast.error("No Records Found");
      }
+     setLoading(false);
     }
     
   return (
     <div>
+      {loading && <Loading/>}
     <div className='recordcontianermain'>
         <div className='recordcontianersub'>
           <p>Money Resigter</p>

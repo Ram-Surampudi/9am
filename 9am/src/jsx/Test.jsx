@@ -4,6 +4,7 @@ import "./css/records.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../App";
+import Loading from "./Loading";
 
 const EditableTable = () => {
   
@@ -27,6 +28,7 @@ const EditableTable = () => {
   const [editRowId, setEditRowId] = useState(null);
   const [total, setTotal] = useState(0);
   const [balance , setBalance] = useState(0);
+  const [loading , setLoading] = useState(false);
   const navigate = useNavigate();
 
   const set = e => setInsertRow({...insertRow, [e.target.name]:e.target.value});
@@ -38,6 +40,7 @@ const EditableTable = () => {
   };
   
   const handleInsert = (e) => {
+    setLoading(true);
     try{
     calculateBalance(insertRow,data ? data.length : 0);
     if(data !== null){
@@ -50,11 +53,12 @@ const EditableTable = () => {
   }
   catch(error){
     console.log(error);
-    
   }
+  setLoading(false);
   };
 
   const handleInsertAbove = (index) => {
+    setLoading(true);
     const _id = new Date();
     setData((prevData) => {
       const updatedData = [...prevData];
@@ -64,6 +68,7 @@ const EditableTable = () => {
     setIbr(true);
     setNewRow({...temp, _id})
     setEditRowId(_id);
+    setLoading(false);
   };
 
   const handleEdit = (_id, row) => {
@@ -85,6 +90,7 @@ const EditableTable = () => {
   
   const handleUpdatedb = async (e) =>{
     e.preventDefault();
+    setLoading(true);
     try{
       data.forEach(item => {
         delete item._id;
@@ -97,12 +103,13 @@ const EditableTable = () => {
     }
     catch(error){
       navigate("/home");
-       setData(null);
        console.log(error);
     }
+    setLoading(false);
   };
 
   const getRecords = async () =>{
+    setLoading(true);
     const token = localStorage.getItem("token");
     try{
       const res = await axios.post(`${URL}verifyandquery`,{month,year}, {headers: {Authorization:token,},});
@@ -115,16 +122,20 @@ const EditableTable = () => {
    }
    catch(error){
     console.log(error);
+    setBalance(0);
+    setTotal(0);
+    setData(null);
     if(error.response.status !== 404)
       navigate("/admin");
     }
+    setLoading(false);
   };
 
   useEffect(()=>{getRecords()},[]);
 
   return (
     <div>
-
+      {loading && <Loading/>}
        <div className='recordcontianermain'>
         <div className='recordcontianersub'>
           <p>Money Resigter</p>
