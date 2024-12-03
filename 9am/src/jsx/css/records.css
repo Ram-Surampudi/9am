@@ -55,6 +55,10 @@
     font-size: medium;
 }
 
+.customtoast{
+    text-transform: capitalize;
+}
+
 table {
     width: 60%;
     border-collapse: collapse;
@@ -103,7 +107,9 @@ tr:nth-child(odd) {
         font-size: small;
         max-width: 100px;
     }
-
+    .customtoast{
+        font-size: 12px;
+    }
 }
 
 

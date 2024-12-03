@@ -8,6 +8,8 @@ const Register = () => {
 
   const [data, setData] = useState(null);
   const [loading , setLoading] = useState(false);
+  const [toatalMoneyCredited , setToatalMoneyCredited] = useState(0);
+  const [totalUsage , setTotalUsage] = useState(0);
   const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -16,13 +18,14 @@ const Register = () => {
     setLoading(true);
     try{
        const res = await axios.get(`${URL}getregister`);
-       res.data.sort((a, b) => {
-        if (a.year !== b.year) {
-          return a.year - b.year; 
-        }
-        return a.month - b.month;
-      });
       setData(res.data);
+      let tmc =0, tu=0;
+      res.data.forEach(item=>{
+        tmc += item.money_credited;
+        tu += item.usage;
+      });
+      setToatalMoneyCredited(tmc);
+      setTotalUsage(tu);
     }
     catch(error){
        setData(null);
@@ -40,7 +43,11 @@ const Register = () => {
   return (
     <div>
       {loading && <Loading/>}
-      <h1  className="transcationstableh2" >Register</h1>
+      <h1  className="transcationstableh2" >Money Register</h1>
+      <div className="totalvaluesclass">
+      <p>Total Money Credited : {toatalMoneyCredited.toLocaleString('en-US')}</p>
+      <p>total Usage : {totalUsage.toLocaleString('en-US')}</p>
+      </div>
       <table>
         <thead>
             <tr key="head">
@@ -57,10 +64,10 @@ const Register = () => {
             <tr key={e._id}>
                 <td>{e.year}</td>
                 <td>{months[e.month-1]}</td>
-                <td>{e.money_credited}</td>
-                <td>{e.hostel_fee}</td>
-                <td>{e.usage}</td>
-                <td>{e.balance}</td>
+                <td>{e.money_credited.toLocaleString('en-US')}</td>
+                <td>{e.hostel_fee.toLocaleString('en-US')}</td>
+                <td>{e.usage.toLocaleString('en-US')}</td>
+                <td>{e.balance.toLocaleString('en-US')}</td>
             </tr>
       ))}
         </tbody>

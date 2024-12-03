@@ -129,4 +129,11 @@
     .actionstableelements{
       width: 70%;
     }
+    .totalvaluesclass{
+      margin-top: 20px;
+      margin-left: 10%;
+    }
+    .totalvaluesclass > p{
+      font-size: 13px;
+    }
   }

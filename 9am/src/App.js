@@ -7,8 +7,8 @@ import Test from './jsx/Test.jsx';
 import Admin from './jsx/admin.jsx';
 import Logout from './jsx/logout.jsx';
 import { Toaster } from 'react-hot-toast';
-// export const URL = "http://localhost:5000/";
-export const URL = "https://9am-backend.vercel.app/";
+export const URL = "http://localhost:5000/";
+// export const URL = "https://9am-backend.vercel.app/";
 
 const App = () => {
 
@@ -17,7 +17,7 @@ const App = () => {
   return (
     <BrowserRouter>
     <Nav/>
-    <Toaster />
+    <Toaster toastOptions={{className: 'customtoast',}}/>
       <Routes>
         <Route path='/' element={<Navigate to={'/home'}/>} />
         <Route path='/home' element={<Records/>} />

@@ -180,7 +180,7 @@ const EditableTable = () => {
           </div>
       </div>
       <div className="totalvaluesclass">
-        <p>total value : {total}</p>
+        <p>total Usage : {total.toLocaleString('en-US')}</p>
       </div>
 
       <table className="actionstableelements">
@@ -203,9 +203,9 @@ const EditableTable = () => {
               <td>{String(new Date(row.date).getDate()).padStart(2, '0')+ '-' + month + '-'+ year}</td>
               <td>{row.description}</td>
               <td>{row.quantity}</td>
-              <td>{row.credit}</td>
-              <td>{row.debit}</td>
-              <td>{row.balance}</td>
+              <td>{row.credit.toLocaleString('en-US')}</td>
+              <td>{row.debit.toLocaleString('en-US')}</td>
+              <td>{row.balance.toLocaleString('en-US')}</td>
               <td className="actionbuttons">
                 <button className="tablebutton edit" onClick={() => handleEdit(row._id, row)}></button>
                 <button className="tablebutton insertabove" onClick={() => handleInsertAbove(index)}>&#8624;</button>
