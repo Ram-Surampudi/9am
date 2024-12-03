@@ -12,7 +12,7 @@ const Records = () => {
     const [total, setTotal] = useState(0);
     const [loading , setLoading] = useState(false);
 
-    const getValue = value => value < 1 ? '-' : value;
+    const getValue = value => value < 1 ? '-' : value?.toLocaleString('en-US') || '-';
 
     useEffect(()=>{
       fetchRecords();
@@ -72,7 +72,7 @@ const Records = () => {
     {data &&
     <div>
       <h2 className="transcationstableh2" >Transaction Table</h2>
-      <p className="totalvaluesclass" >{month} Total Usage : {total.toLocaleString('en-US')}</p>
+      <p className="totalvaluesclass" >Total Usage : {total.toLocaleString('en-US')}</p>
     <table>
         <thead>
             <tr key="head">
@@ -90,9 +90,9 @@ const Records = () => {
                 <td>{String(new Date(e.date).getDate()).padStart(2, '0')+ '-' + month + '-'+ year}</td>
                 <td>{e.description}</td>
                 <td>{getValue(e.quantity)}</td>
-                <td>{getValue(e.credit.toLocaleString('en-US'))}</td>
-                <td>{getValue(e.debit.toLocaleString('en-US'))}</td>
-                <td>{getValue(e.balance.toLocaleString('en-US'))}</td>
+                <td>{getValue(e.credit)}</td>
+                <td>{getValue(e.debit)}</td>
+                <td>{getValue(e.balance)}</td>
             </tr>
       ))}
         </tbody>

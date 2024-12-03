@@ -103,7 +103,6 @@ const EditableTable = () => {
        toast.success("Updated Sucessfully");
     }
     catch(error){
-      // navigate("/home");
        console.log(error);
        toast.error("Something Went Wrong");
     }
@@ -127,7 +126,7 @@ const EditableTable = () => {
     balance =0;
     setTotal(0);
     setData(null);
-    if(error.response.status !== 404)
+    if(error?.response?.status !== 404)
       navigate("/admin");
     }
     setLoading(false);
@@ -180,7 +179,7 @@ const EditableTable = () => {
           </div>
       </div>
       <div className="totalvaluesclass">
-        <p>total Usage : {total.toLocaleString('en-US')}</p>
+        <p>total Usage : {total?.toLocaleString('en-US')}</p>
       </div>
 
       <table className="actionstableelements">
@@ -203,9 +202,9 @@ const EditableTable = () => {
               <td>{String(new Date(row.date).getDate()).padStart(2, '0')+ '-' + month + '-'+ year}</td>
               <td>{row.description}</td>
               <td>{row.quantity}</td>
-              <td>{row.credit.toLocaleString('en-US')}</td>
-              <td>{row.debit.toLocaleString('en-US')}</td>
-              <td>{row.balance.toLocaleString('en-US')}</td>
+              <td>{row.credit?.toLocaleString('en-US')}</td>
+              <td>{row.debit?.toLocaleString('en-US')}</td>
+              <td>{row.balance?.toLocaleString('en-US')}</td>
               <td className="actionbuttons">
                 <button className="tablebutton edit" onClick={() => handleEdit(row._id, row)}></button>
                 <button className="tablebutton insertabove" onClick={() => handleInsertAbove(index)}>&#8624;</button>
