@@ -17,7 +17,7 @@ require('dotenv').config();
 app.use(cors());
 
 app.use(cors({
-  origin: "", // Allowed origin
+  origin: "https://9am.vercel.app", // Allowed origin
   methods: "GET,POST,PUT,DELETE", // Allowed methods
   credentials: true // Allow cookies and authentication headers
 }));
