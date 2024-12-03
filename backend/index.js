@@ -5,6 +5,7 @@ const Records = require("./Schemas/Records");
 const MoneyRegister = require("./Schemas/MoneyRegister");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const { Register } = require("./cla.js");
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,34 +17,12 @@ require('dotenv').config();
 app.use(cors());
 
 app.use(cors({
-  origin: "", // Allowed origin
+  origin: "https://9am.vercel.app", // Allowed origin
   methods: "GET,POST,PUT,DELETE", // Allowed methods
   credentials: true // Allow cookies and authentication headers
 }));
 
 mongoose.connect(process.env.MONGO_URI);
-
-const Register = async (record) =>{
-  let hostel_fee=0, money_credited =0, usage =0;
-
-  const {month, year, transactions} = record;
-
-  transactions.forEach(item=>{
-      money_credited += item.credit;
-      usage += item.debit;
-      if(item.description === 'hostel fee' || item.description === 'ac bill') hostel_fee += item.debit;
-  });
-
-  let balance = money_credited - usage;
-
-  let money_reg = await MoneyRegister.findOne({year,month});
-
-  if(money_reg)
-    money_reg.set({...money_reg,hostel_fee, balance, money_credited, usage });
-  else money_reg = new MoneyRegister({month ,year, hostel_fee, balance, money_credited, usage});
-
-  await money_reg.save();
-}
 
 const generateToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn:"3h"});
@@ -70,27 +49,40 @@ app.get("/getregister", async (req, res)=>{
   res.status(200).send(money_register);
 })
 
+app.post("/insertManyMr", async (req, res)=>{
+  req.body.sort((a, b) => {
+    if (a.year !== b.year) {
+      return a.year - b.year; 
+    }
+    return a.month - b.month;
+  });
+  await MoneyRegister.deleteMany(); 
+ await MoneyRegister.insertMany(req.body);
+  res.status(200).send(req.body);
+})
+
 app.post("/crud",authenticateToken, async (req, res)=>{
-  const { month, year, transactions,balance } = req.body;
-  console.log(req.body);
+  const { month, year, transactions} = req.body;
 
   try {
     let record = await Records.findOne({ month, year });
 
     if (!record) {
-      record = new Records({ month, year, balance, transactions: [] });
+      record = new Records({ month, year, transactions: [] });
     }
 
+    const balance = await Register(record);
     record.set({...record,transactions,balance});
-
+    
     await record.save();
-
-    await Register(record);
+    console.log("crud");
+    
 
     res.status(201).send(record);
   } catch (error) {
     res.status(500).send(error);
     console.log(error);
+    
     
   }
 
@@ -98,7 +90,6 @@ app.post("/crud",authenticateToken, async (req, res)=>{
 
 app.post("/add", async (req, res) => {
   const { month, year, transaction } = req.body;
-  console.log(req.body);
   
 
   try {
@@ -206,7 +197,6 @@ app.post("/query", async (req, res) => {
 
 app.post("/verifyandquery",authenticateToken, async (req, res) => {
   const { month, year } = req.body;
-  console.log("called query");
   try {
     const record = await Records.findOne({ month, year });
 
@@ -221,8 +211,6 @@ app.post("/verifyandquery",authenticateToken, async (req, res) => {
 });
 
 app.post("/adminlogin", (req, res)=>{
-  console.log("called login");
-    console.log(process.env.LOGIN_USERNAME);
     
     if(req.body.username === process.env.LOGIN_USERNAME){
       if(req.body.password === process.env.PASSWORD){

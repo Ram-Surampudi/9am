@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../App";
 import Loading from "./Loading";
+import toast from "react-hot-toast";
 
 const EditableTable = () => {
   
@@ -27,7 +28,7 @@ const EditableTable = () => {
   const [insertRow, setInsertRow] = useState(temp);
   const [editRowId, setEditRowId] = useState(null);
   const [total, setTotal] = useState(0);
-  const [balance , setBalance] = useState(0);
+  var balance =0;
   const [loading , setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -99,11 +100,12 @@ const EditableTable = () => {
       });
        const res = await axios.post(`${URL}crud`,{month, year, balance, transactions :data}, {headers: {Authorization:localStorage.getItem("token"),},});
        console.log(res);
-       alert("sucess");
+       toast.success("Updated Sucessfully");
     }
     catch(error){
-      navigate("/home");
+      // navigate("/home");
        console.log(error);
+       toast.error("Something Went Wrong");
     }
     setLoading(false);
   };
@@ -116,13 +118,13 @@ const EditableTable = () => {
       console.log(res);
       setData(res.data.transactions); 
       setTotal(res.data.transactions.reduce((tot, current)=>tot+current.debit, 0));
-      setBalance(res.data.balance);
+      balance = res.data.balance;
       console.log(total);
       
    }
    catch(error){
     console.log(error);
-    setBalance(0);
+    balance =0;
     setTotal(0);
     setData(null);
     if(error.response.status !== 404)
@@ -179,7 +181,6 @@ const EditableTable = () => {
       </div>
       <div className="totalvaluesclass">
         <p>total value : {total}</p>
-        Balance : <input type="number" value={balance} onChange={e=>setBalance(e.target.value)} />
       </div>
 
       <table className="actionstableelements">
