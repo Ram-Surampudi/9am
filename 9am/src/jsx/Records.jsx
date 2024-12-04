@@ -72,7 +72,7 @@ const Records = () => {
     {data &&
     <div>
       <h2 className="transcationstableh2" >Transaction Table</h2>
-      <p className="totalvaluesclass" >Total Usage : <strong>{total.toLocaleString('en-US')}</strong></p>
+      <p className="totalvaluesclass" >TOTAL USAGE : <strong>{total.toLocaleString('en-US')}</strong></p>
     <table>
         <thead>
             <tr key="head">

@@ -50,11 +50,13 @@ const excelFile = async () =>{
     <div>
       {loading && <Loading/>}
       <h1  className="transcationstableh2" >Money Register</h1>
-      <div className="totalvaluesclass">
+      <div className='exceld'>
+      <div>
       <p>Total Money Credited : <strong>{toatalMoneyCredited.toLocaleString('en-US')}</strong></p>
-      <p>total Usage : <strong>{totalUsage.toLocaleString('en-US')}</strong></p>
+      <p>Total Usage : <strong>{totalUsage.toLocaleString('en-US')}</strong></p>
       </div>
-      <div className='exceld'><button onClick={excelFile}> download excel</button></div>
+        <button onClick={excelFile}> download Register</button>
+        </div>
       <table>
         <thead>
             <tr key="head">

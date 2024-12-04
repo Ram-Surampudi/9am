@@ -107,14 +107,6 @@
     margin-left: 20%;
   }
 
-  .totalvaluesclass > input{
-    border: 1px #ccc solid;
-    border-radius: 5px;
-    font: inherit;
-    outline: none;
-    padding: 3px;
-    margin: 3px;
-  }
 
   .transcationstableh2{
     font: inherit;
@@ -130,10 +122,8 @@
       width: 70%;
     }
     .totalvaluesclass{
-      margin-top: 20px;
+      margin-top: 10px;
       margin-left: 8%;
-    }
-    .totalvaluesclass > p{
-      font-size: 10px;
+      font-size: medium;
     }
   }

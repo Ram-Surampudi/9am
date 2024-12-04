@@ -60,18 +60,19 @@
 }
 
 .exceld{
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin:10px auto;
+    /* margin: auto; */
     font: inherit;
     display: flex;
-    justify-content: end;
-    width: 80%;
+    justify-content: space-between;
+    width: 60%;
+    align-items: flex-end;
 }
 
 .exceld > button{
-    padding: 6px;
+    padding: 6px 10px;
     text-align: center;
-    text-transform: capitalize;
+    text-transform: uppercase;
     font: inherit;
     background-color: #333;
     color: white;

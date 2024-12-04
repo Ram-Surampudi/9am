@@ -42,7 +42,6 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-
 app.get("/excelfile", async (req, res)=>{
   const records = await Records.find();
   const register = await MoneyRegister.find();
@@ -50,7 +49,6 @@ app.get("/excelfile", async (req, res)=>{
   
   res.status(200).send({records, register});
 });
-
 
 app.get("/getregister", async (req, res)=>{
   const money_register = await MoneyRegister.find() ;
@@ -113,97 +111,6 @@ app.post("/crud",authenticateToken, async (req, res)=>{
 
 })
 
-app.post("/add", async (req, res) => {
-  const { month, year, transaction } = req.body;
-  
-
-  try {
-    let record = await Records.findOne({ month, year });
-    if (!record) {
-      record = new Records({ month, year, transactions: [] });
-    }
-
-    record.transactions.push(transaction);
-    await record.save();
-
-    await Register(record);
-
-    res.status(201).send(record);
-  } catch (error) {
-    res.status(500).send(error);
-    console.log(error);
-    
-  }
-});
-
-app.post("/insert", async (req, res) => {
-  const { month, year, position, transaction } = req.body;
-
-  try {
-    const record = await Records.findOne({ month, year });
-
-    if (!record) {
-      return res.status(404).send("Record not found for the specified month and year.");
-    }
-
-    record.transactions.splice(position, 0, transaction);
-    await record.save();
-
-    await Register(record);
-
-    res.status(200).send(record);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-app.put("/update", async (req, res) => {
-  const { month, year, index, transaction } = req.body;
-
-  try {
-    const record = await Records.findOne({ month, year });
-
-    if (!record || !record.transactions[index]) {
-      return res.status(404).send("Transaction not found.");
-    }
-
-    record.transactions[index] = { ...record.transactions[index], ...transaction };
-    await record.save();
-
-    await Register(record);
-
-    res.status(200).send(record);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-app.delete("/delete", async (req, res) => {
-  const { month, year, index } = req.body;
-
-  try {
-    const record = await Records.findOne({ month, year });
-
-    if (!record || !record.transactions[index]) {
-      return res.status(404).send("Transaction not found.");
-    }
-
-    record.transactions.splice(index, 1);
-    await record.save();
-    await Register(record);
-
-    res.status(200).send(record);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-app.delete("/deleteall", async (req, res)=>{
-  const {month ,year} = req.body;
-  await Records.deleteMany({month , year});
-  res.send("success");
-});
-
 app.post("/query", async (req, res) => {
   const { month, year } = req.body;
 
@@ -253,4 +160,95 @@ app.listen(PORT, () => {
 });
 
 
+
+// app.post("/add", async (req, res) => {
+//   const { month, year, transaction } = req.body;
+  
+
+//   try {
+//     let record = await Records.findOne({ month, year });
+//     if (!record) {
+//       record = new Records({ month, year, transactions: [] });
+//     }
+
+//     record.transactions.push(transaction);
+//     await record.save();
+
+//     await Register(record);
+
+//     res.status(201).send(record);
+//   } catch (error) {
+//     res.status(500).send(error);
+//     console.log(error);
+    
+//   }
+// });
+
+// app.post("/insert", async (req, res) => {
+//   const { month, year, position, transaction } = req.body;
+
+//   try {
+//     const record = await Records.findOne({ month, year });
+
+//     if (!record) {
+//       return res.status(404).send("Record not found for the specified month and year.");
+//     }
+
+//     record.transactions.splice(position, 0, transaction);
+//     await record.save();
+
+//     await Register(record);
+
+//     res.status(200).send(record);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
+
+// app.put("/update", async (req, res) => {
+//   const { month, year, index, transaction } = req.body;
+
+//   try {
+//     const record = await Records.findOne({ month, year });
+
+//     if (!record || !record.transactions[index]) {
+//       return res.status(404).send("Transaction not found.");
+//     }
+
+//     record.transactions[index] = { ...record.transactions[index], ...transaction };
+//     await record.save();
+
+//     await Register(record);
+
+//     res.status(200).send(record);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
+
+// app.delete("/delete", async (req, res) => {
+//   const { month, year, index } = req.body;
+
+//   try {
+//     const record = await Records.findOne({ month, year });
+
+//     if (!record || !record.transactions[index]) {
+//       return res.status(404).send("Transaction not found.");
+//     }
+
+//     record.transactions.splice(index, 1);
+//     await record.save();
+//     await Register(record);
+
+//     res.status(200).send(record);
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
+
+// app.delete("/deleteall", async (req, res)=>{
+//   const {month ,year} = req.body;
+//   await Records.deleteMany({month , year});
+//   res.send("success");
+// });
 
