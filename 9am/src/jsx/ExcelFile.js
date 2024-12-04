@@ -61,7 +61,7 @@ export const downloadExcel = async () => {
       // Style headers
       headerRow.font = { bold: true, color: { argb: "FFFFFFFF" }, size : 16 };
       headerRow.eachCell(cell=>{
-          cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFF6600" } };
+          cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "00000000" } };
       })
       headerRow.alignment = { horizontal: "center", vertical: "middle" };
       headerRow.height = 30;
@@ -111,7 +111,7 @@ export const downloadExcel = async () => {
     worksheet.mergeCells("A1:F1");
     const headerCell = worksheet.getCell("A1");
     headerCell.value = "MONEY REGISTER";
-    headerCell.font = { bold: true, size: 20, color: { argb: "FF008000" } };
+    headerCell.font = { bold: true, size: 20, color: { argb: "00000000" } };
     headerCell.alignment = { horizontal: "center", vertical: "middle" };
 
     let tmc =0, tu=0;
