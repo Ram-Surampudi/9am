@@ -6,6 +6,7 @@ import Loading from './Loading';
 import toast from 'react-hot-toast';
 
 const Records = () => {
+
     const [year , setYear] = useState('2024');
     const [month , setMonth] = useState(new Date().getMonth()+1);
     const [data, setData] = useState(null);
