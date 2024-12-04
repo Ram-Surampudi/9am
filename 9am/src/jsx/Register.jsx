@@ -43,7 +43,7 @@ const excelFile = async () =>{
   setLoading(true);
   await downloadExcel();
   setLoading(false);
-  toast.success("Downloaded");
+  toast.success("Downloading");
 }
 
   return (
