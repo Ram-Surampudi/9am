@@ -15,7 +15,8 @@ require('dotenv').config();
 app.use(cors());
 
 app.use(cors({
-  origin: "https://9am.vercel.app", // Allowed origin
+  origin: "https://9am.vercel.app", 
+  // origin: "", 
   methods: "GET,POST,PUT,DELETE", // Allowed methods
   credentials: true // Allow cookies and authentication headers
 }));
@@ -42,21 +43,47 @@ const authenticateToken = (req, res, next) => {
 };
 
 
+app.get("/excelfile", async (req, res)=>{
+  const records = await Records.find();
+  const register = await MoneyRegister.find();
+  console.log("sucess");
+  
+  res.status(200).send({records, register});
+});
+
+
 app.get("/getregister", async (req, res)=>{
   const money_register = await MoneyRegister.find() ;
   res.status(200).send(money_register);
 })
 
-app.post("/insertManyMr", async (req, res)=>{
-  req.body.sort((a, b) => {
+app.post("/sortRegister", async (req, res)=>{
+  let data = await MoneyRegister.find();
+
+  data.sort((a, b) => {
     if (a.year !== b.year) {
       return a.year - b.year; 
     }
     return a.month - b.month;
   });
+
   await MoneyRegister.deleteMany(); 
- await MoneyRegister.insertMany(req.body);
-  res.status(200).send(req.body);
+ await MoneyRegister.insertMany(data);
+  res.status(200).send(data);
+})
+
+app.post("/sortRecords", async (req, res)=>{
+  var data = await Records.find();
+
+  data.sort((a, b) => {
+    if (a.year !== b.year) {
+      return a.year - b.year; 
+    }
+    return a.month - b.month;
+  });
+  await Records.deleteMany(); 
+ await Records.insertMany(data);
+  res.status(200).send(data);
 })
 
 app.post("/crud",authenticateToken, async (req, res)=>{

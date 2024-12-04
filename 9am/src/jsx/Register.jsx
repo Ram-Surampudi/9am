@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { URL } from '../App';
 import Loading from './Loading';
 import toast from 'react-hot-toast';
+import { downloadExcel } from './ExcelFile';
 
 const Register = () => {
 
@@ -38,16 +39,23 @@ const Register = () => {
     fetchRecords();
   },[]);
 
-
+const excelFile = async () =>{
+  setLoading(true);
+  await downloadExcel();
+  setLoading(false);
+  toast.success("Downloaded");
+}
 
   return (
     <div>
       {loading && <Loading/>}
       <h1  className="transcationstableh2" >Money Register</h1>
+      <br /> <br /> <br />
       <div className="totalvaluesclass">
-      <p>Total Money Credited : {toatalMoneyCredited.toLocaleString('en-US')}</p>
-      <p>total Usage : {totalUsage.toLocaleString('en-US')}</p>
+      <p>Total Money Credited : <strong>{toatalMoneyCredited.toLocaleString('en-US')}</strong></p>
+      <p>total Usage : <strong>{totalUsage.toLocaleString('en-US')}</strong></p>
       </div>
+      <div className='exceld'><button onClick={excelFile}> download excel file</button></div>
       <table>
         <thead>
             <tr key="head">
