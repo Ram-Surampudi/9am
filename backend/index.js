@@ -94,8 +94,9 @@ app.post("/crud",authenticateToken, async (req, res)=>{
       record = new Records({ month, year, transactions: [] });
     }
 
+    record.set({...record,transactions});
     const balance = await Register(record);
-    record.set({...record,transactions,balance});
+    record.balance = balance;
     
     await record.save();
     console.log("crud");
