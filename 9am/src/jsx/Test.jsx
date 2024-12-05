@@ -20,7 +20,7 @@ const EditableTable = () => {
   };
 
   const [data, setData] = useState(null);
-  const [year , setYear] = useState(2024);
+  const [year , setYear] = useState(new Date().getFullYear());
   const [month , setMonth] = useState(new Date().getMonth()+1);
   const [toggle , setToggle] = useState(false);
   const [ibr, setIbr] = useState(false);
@@ -127,7 +127,7 @@ const EditableTable = () => {
     setTotal(0);
     setData(null);
     if(error?.response?.status !== 404)
-      navigate("/admin");
+      navigate("/logout");
     }
     setLoading(false);
   };

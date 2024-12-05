@@ -18,7 +18,6 @@ const Admin = () => {
     setLoading(true);
     try{
       const res = await axios.post(`${URL}adminlogin`,data);
-      console.log(res);
       
       localStorage.setItem("token", res.data);
       navigate('/test');

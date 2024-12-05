@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 const Records = () => {
 
-    const [year , setYear] = useState('2024');
+    const [year , setYear] = useState(new Date().getFullYear());
     const [month , setMonth] = useState(new Date().getMonth()+1);
     const [data, setData] = useState(null);
     const [total, setTotal] = useState(0);
