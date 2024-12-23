@@ -25,6 +25,13 @@ const Register = async (record) =>{
     
     var reg = await MoneyRegister.find();
     // var reg = await MoneyRegister.findOne({month , year});
+
+ reg.sort((a,b)=>{
+   if(a.year == b.year){
+    return a.month - b.month;
+   }
+  return a.year - b.year;
+ })
     
     transactions.forEach(item=>{
         money_credited += item.credit;
