@@ -46,7 +46,7 @@ app.get("/excelfile", async (req, res)=>{
   const records = await Records.find();
   const register = await MoneyRegister.find();
 
-  money_register.sort((a,b)=>{
+  register.sort((a,b)=>{
    if(a.year == b.year){
     return a.month - b.month;
    }
