@@ -45,6 +45,14 @@ const authenticateToken = (req, res, next) => {
 app.get("/excelfile", async (req, res)=>{
   const records = await Records.find();
   const register = await MoneyRegister.find();
+
+  money_register.sort((a,b)=>{
+   if(a.year == b.year){
+    return a.month - b.month;
+   }
+  return a.year - b.year;
+ })
+  
   console.log("sucess");
   
   res.status(200).send({records, register});
@@ -52,6 +60,12 @@ app.get("/excelfile", async (req, res)=>{
 
 app.get("/getregister", async (req, res)=>{
   const money_register = await MoneyRegister.find() ;
+    money_register.sort((a,b)=>{
+   if(a.year == b.year){
+    return a.month - b.month;
+   }
+  return a.year - b.year;
+ })
   res.status(200).send(money_register);
 })
 
