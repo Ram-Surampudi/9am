@@ -43,6 +43,7 @@ const EditableTable = () => {
   const handleInsert = (e) => {
     setLoading(true);
     try{
+    insertRow._id = new Date();
     calculateBalance(insertRow,data ? data.length : 0);
     if(data !== null){
       data.push(insertRow);
