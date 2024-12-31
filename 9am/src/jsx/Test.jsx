@@ -44,7 +44,7 @@ const EditableTable = () => {
     setLoading(true);
     try{
     insertRow._id = new Date();
-    calculateBalance(insertRow,data ? data.length : 0);
+    calculateBalance(insertRow,data ? data?.length : 0);
     if(data !== null){
       data.push(insertRow);
       setData(data);
@@ -94,7 +94,7 @@ const EditableTable = () => {
     e.preventDefault();
     setLoading(true);
     try{
-      data.forEach(item => {
+      data?.forEach(item => {
         delete item._id;
         item.credit = parseInt(item.credit);
         item.debit = parseInt(item.debit);
@@ -116,9 +116,9 @@ const EditableTable = () => {
     try{
       const res = await axios.post(`${URL}verifyandquery`,{month,year}, {headers: {Authorization:token,},});
       console.log(res);
-      setData(res.data.transactions); 
-      setTotal(res.data.transactions.reduce((tot, current)=>tot+current.debit, 0));
-      balance = res.data.balance;
+      setData(res?.data?.transactions); 
+      setTotal(res?.data?.transactions?.reduce((tot, current)=>tot+current.debit, 0));
+      balance = res?.data?.balance;
       console.log(total);
       
    }

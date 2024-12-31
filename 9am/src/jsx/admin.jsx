@@ -18,14 +18,15 @@ const Admin = () => {
     setLoading(true);
     try{
       const res = await axios.post(`${URL}adminlogin`,data);
-      
-      localStorage.setItem("token", res.data);
+      console.log(res);
+      if(res)
+        localStorage.setItem("token", res.data);
       navigate('/test');
       window.location.reload();
    }
    catch(error){
     console.log(error);
-    toast.error(error.response.data);
+    toast.error(error?.response?.data || "An error occured");
    }
    setLoading(false);
   }

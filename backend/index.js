@@ -15,8 +15,8 @@ require('dotenv').config();
 app.use(cors());
 
 app.use(cors({
-  origin: "https://9am.vercel.app", 
-  // origin: "", 
+  // origin: "https://9am.vercel.app", 
+  origin: "", 
   methods: "GET,POST,PUT,DELETE", // Allowed methods
   credentials: true // Allow cookies and authentication headers
 }));
@@ -47,6 +47,13 @@ app.get("/excelfile", async (req, res)=>{
   const register = await MoneyRegister.find();
 
   register.sort((a,b)=>{
+   if(a.year == b.year){
+    return a.month - b.month;
+   }
+  return a.year - b.year;
+ })
+
+  records.sort((a,b)=>{
    if(a.year == b.year){
     return a.month - b.month;
    }
