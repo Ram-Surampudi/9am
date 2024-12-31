@@ -52,6 +52,13 @@ app.get("/excelfile", async (req, res)=>{
    }
   return a.year - b.year;
  })
+
+    records.sort((a,b)=>{
+   if(a.year == b.year){
+    return a.month - b.month;
+   }
+  return a.year - b.year;
+ })
   
   console.log("sucess");
   
