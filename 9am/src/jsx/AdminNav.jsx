@@ -2,12 +2,12 @@ import React from 'react'
 import './css/nav.css'
 
 const Nav = () => {
-    const nav = ['logout']
+    const nav = ['home','register', 'test', 'logout'];
   return (
     <div className='navcontainer'>
         <ul className='navgroup'>
         {nav.map(navItem=>(
-            <li key={navItem} className='navItems'><a href={`/${navItem}`}>{navItem}</a></li>
+            <li key={navItem} className='navItems'><a href={`/admin/${navItem}`}>{navItem}</a></li>
             ))}
       </ul>
     </div>

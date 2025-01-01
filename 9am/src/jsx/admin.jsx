@@ -21,8 +21,7 @@ const Admin = () => {
       console.log(res);
       if(res)
         localStorage.setItem("token", res.data);
-      navigate('/test');
-      window.location.reload();
+      navigate('/admin/home');
    }
    catch(error){
     console.log(error);

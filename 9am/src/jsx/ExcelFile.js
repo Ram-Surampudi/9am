@@ -140,6 +140,13 @@ export const downloadExcel = async () => {
     worksheet.getCell("C3").font = { bold: true, size: 16 };
     worksheet.getCell("C3").alignment = { horizontal: "left", vertical: "middle" };
 
+    // worksheet.mergeCells("I5:K5");
+    // const catCell = worksheet.getCell("I5");
+    // catCell.value = "CATEGORICAL DATA";
+    // catCell.font = { bold: true, size: 20, color: { argb: "ffffffff" } };
+    // catCell.alignment = { horizontal: "center", vertical: "middle" };
+    // catCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "00000000" } };
+
     worksheet.addRow([]);
     const headers = ["YEAR", "MONTH", "MONEY CREDITED", "HOSTEL FEE", "USAGE", "BALANCE"];
     const headerRow = worksheet.addRow(headers);
@@ -176,10 +183,10 @@ export const downloadExcel = async () => {
 
     // Set column widths
     worksheet.columns = [
-      { width: 15 }, // DATE
-      { width: 25 }, // DESCRIPTION
-      { width: 25 }, // QUANTITY
-      { width: 25 }, // DEBIT
+      { width: 10 }, // DATE
+      { width: 20 }, // DESCRIPTION
+      { width: 20 }, // QUANTITY
+      { width: 17 }, // DEBIT
       { width: 15 }, 
       { width: 15 }, 
     ];

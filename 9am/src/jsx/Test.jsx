@@ -128,7 +128,7 @@ const EditableTable = () => {
     setTotal(0);
     setData(null);
     if(error?.response?.status !== 404)
-      navigate("/logout");
+      navigate("/admin/logout");
     }
     setLoading(false);
   };
