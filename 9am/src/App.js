@@ -8,8 +8,8 @@ import Logout from './jsx/logout.jsx';
 import UserLayout from './Layouts/UserLayout.jsx';
 import AdminLayout from './Layouts/AdminLayout.jsx';
 import { Toaster } from 'react-hot-toast';
-export const URL = "http://localhost:5000/";
-// export const URL = "https://9am-backend.vercel.app/";
+// export const URL = "http://localhost:5000/";
+export const URL = "https://9am-backend.vercel.app/";
 
 const App = () => {
     
