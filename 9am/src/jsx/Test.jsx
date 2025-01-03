@@ -100,8 +100,8 @@ const EditableTable = () => {
         item.debit = parseInt(item.debit);
       });
        const res = await axios.post(`${URL}crud`,{month, year, balance, transactions :data}, {headers: {Authorization:localStorage.getItem("token"),},});
-       console.log(res);
        toast.success("Updated Sucessfully");
+       setData(res?.data.transactions);
     }
     catch(error){
        console.log(error);
@@ -115,10 +115,11 @@ const EditableTable = () => {
     const token = localStorage.getItem("token");
     try{
       const res = await axios.post(`${URL}verifyandquery`,{month,year}, {headers: {Authorization:token,},});
-      console.log(res);
       setData(res?.data?.transactions); 
       setTotal(res?.data?.transactions?.reduce((tot, current)=>tot+current.debit, 0));
       balance = res?.data?.balance;
+      console.log(balance);
+      
       console.log(total);
       
    }

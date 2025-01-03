@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const Records = require("./Schemas/Records");
-const MoneyRegister = require("./Schemas/MoneyRegister");
+const MoneyRegister = require("./Schemas/MoneyRegister.js");
+const Records = require("./Schemas/Records.js");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const { Register } = require("./cla.js");
@@ -116,13 +116,8 @@ app.post("/crud",authenticateToken, async (req, res)=>{
     }
 
     record.set({...record,transactions});
-    const balance = await Register(record);
-    record.balance = balance;
+    await Register(record);
     
-    await record.save();
-    console.log("crud");
-    
-
     res.status(201).send(record);
   } catch (error) {
     res.status(500).send(error);

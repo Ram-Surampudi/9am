@@ -1,4 +1,6 @@
+
 const MoneyRegister = require("./Schemas/MoneyRegister.js");
+const Records = require("./Schemas/Records.js");
 
  const nextMonth = ({month , year}) =>{
     if(month === 12){
@@ -81,7 +83,49 @@ const Register = async (record) =>{
         await MoneyRegister.bulkWrite(operations);
     }
 
-    return prevBalance;
+    if(transactions.length > 0){
+        transactions[0].balance = (transactions[0].credit + prevBalance) - transactions[0].debit; 
+    }
+    for(var j =1; i < transactions.length; j++){
+        transactions[j].balance = (transactions[j-1].balance - transactions[j].debit) + transactions[j].credit;
+    }
+    record.transactions = transactions;
+    await record.save();
+
+    if(index < reg.length -1){
+        var newRecords = await Records.find();
+
+        newRecords.sort((a,b)=>{
+            if(a.year == b.year){
+             return a.month - b.month;
+            }
+           return a.year - b.year;
+          })
+        
+        var operations = [];
+        for(var i = index+1 ; i < newRecords.length; i++){
+            let prevBal = newRecords[i-1].balance;
+            const {transactions} = newRecords[i];
+
+            if(transactions.length > 0){
+                transactions[0].balance = (transactions[0].credit + prevBal) - transactions[0].debit; 
+            }
+            for(var j =1; i < transactions.length-1; j++){
+                transactions[j].balance = (transactions[j-1].balance - transactions[j].debit) + transactions[j].credit;
+            }
+            newRecords[i].transactions = transactions; 
+            operations.push({
+                updateOne: {
+                    filter: { _id:newRecords[i]._id },  
+                    update: { $set: newRecords[i] },
+                }
+            });           
+        }
+        if(operations)
+            await Records.bulkWrite(operations);
+
+    }
+
   }
 
   module.exports = { nextMonth, prevMonth, Register };
