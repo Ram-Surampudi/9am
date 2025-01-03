@@ -84,12 +84,13 @@ const Register = async (record) =>{
     }
 
     if(transactions.length > 0){
-        transactions[0].balance = (transactions[0].credit + prevBalance) - transactions[0].debit; 
+        transactions[0].balance = ((transactions[0]?.credit || 0) + prevBalance ) - transactions[0]?.debit || 0; 
     }
-    for(var j =1; i < transactions.length; j++){
-        transactions[j].balance = (transactions[j-1].balance - transactions[j].debit) + transactions[j].credit;
+    for(var j =1; j < transactions.length; j++){
+        transactions[j].balance = (transactions[j-1].balance - (transactions[j]?.debit || 0)) + transactions[j]?.credit || 0;
     }
     record.transactions = transactions;
+    record.balance = transactions[transactions.length-1].balance;
     await record.save();
 
     if(index < reg.length -1){
@@ -108,12 +109,13 @@ const Register = async (record) =>{
             const {transactions} = newRecords[i];
 
             if(transactions.length > 0){
-                transactions[0].balance = (transactions[0].credit + prevBal) - transactions[0].debit; 
+                transactions[0].balance = ((transactions[0]?.credit || 0) + prevBal) - transactions[0]?.debit || 0; 
             }
-            for(var j =1; i < transactions.length-1; j++){
-                transactions[j].balance = (transactions[j-1].balance - transactions[j].debit) + transactions[j].credit;
+            for(var j =1; j < transactions.length; j++){
+                transactions[j].balance = (transactions[j-1].balance - (transactions[j]?.debit || 0)) + transactions[j]?.credit || 0;
             }
             newRecords[i].transactions = transactions; 
+            newRecords[i].balance = transactions[transactions.length-1].balance;
             operations.push({
                 updateOne: {
                     filter: { _id:newRecords[i]._id },  
