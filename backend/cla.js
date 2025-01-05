@@ -21,7 +21,7 @@ const Records = require("./Schemas/Records.js");
 }
 
 const Register = async (record) =>{
-    let hostel_fee=0, money_credited =0, usage =0;
+    let hostel_fee=0, money_credited =0, usage =0, college_fee=0;
   
     const {month, year, transactions} = record;
     
@@ -38,8 +38,13 @@ const Register = async (record) =>{
     transactions.forEach(item=>{
         money_credited += item.credit;
         usage += item.debit;
-        if(item.description.toLowerCase() === 'hostel fee' || item.description.toLowerCase() === 'ac bill') hostel_fee += item.debit;
+        if(item.description.includes('(h)'))
+             hostel_fee += item.debit;
+        if(item.description.includes('(clg)'))
+            college_fee += item.debit;
     });
+    
+    console.log(college_fee);
     
 
     // if(reg){
@@ -50,26 +55,34 @@ const Register = async (record) =>{
     // reg.save();
     
     console.log("called register 1");
-    var index =0, balance =0 , prevBalance =0;
+    var index =0, balance =0 , prevBalance =0, oldRegisterBal =0;
     const {m,y} = prevMonth({month,year});
 
-    for(index =0; index<reg.length; index++){
+    if(m === 7 && y === 2023){
+        const mr_reg = reg[0];
+        balance = (money_credited - usage);
+        oldRegisterBal = mr_reg.balance;
+        mr_reg.set({...mr_reg,hostel_fee, balance, money_credited, usage, college_fee });
+        await mr_reg.save();
+    }
+    else for(index =1; index<reg.length; index++){
         var mr_reg=null ;
         if(reg[index].year === y && reg[index].month === m){
             prevBalance = reg[index].balance;
              balance = (money_credited - usage) + prevBalance;
              if(index++ !== reg.length-1){
+                oldRegisterBal = reg[index].balance;
                  reg[index].balance = balance;  
                  mr_reg = reg[index];
-                 mr_reg.set({...mr_reg,hostel_fee, balance, money_credited, usage });
+                 mr_reg.set({...mr_reg,hostel_fee, balance, money_credited, usage, college_fee });
                 }
-                else mr_reg = new MoneyRegister({month ,year, hostel_fee, balance, money_credited, usage})
+                else mr_reg = new MoneyRegister({month ,year, hostel_fee, balance, money_credited, usage, college_fee})
             await mr_reg.save();
             break;
         }
     }
 
-    if(index < reg.length-1){
+    if(index < reg.length-1 && oldRegisterBal !== balance){
         var operations = [];
         for(var i = index+1 ; i<reg.length; i++){
             reg[i].balance = (reg[i].money_credited - reg[i].usage) + reg[i-1].balance;
@@ -80,7 +93,8 @@ const Register = async (record) =>{
                 }
             });
         }
-        await MoneyRegister.bulkWrite(operations);
+        if(operations)
+            await MoneyRegister.bulkWrite(operations);
     }
 
     let oldRecordBalance = record.balance;

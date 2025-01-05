@@ -18,7 +18,7 @@ const addRegisterPage = (workbook, register) => {
   headerCell.font = { size: 28, color: { argb: "FF70AD47" } ,  name: "Bahnschrift Condensed" };
   headerCell.alignment = { horizontal: "center", vertical: "middle" };
 
-  let tmc =0, tu=0, total_hostel_fee = 0, A2023=0, A2024=0, A2025=0;
+  let tmc =0, tu=0, total_hostel_fee = 0, A2023=0, A2024=0, A2025=0, clg = 0;
 
   register.forEach(item=>{
       tmc += item.money_credited;
@@ -33,28 +33,30 @@ const addRegisterPage = (workbook, register) => {
       else {
           A2025 += item.usage;
       }
+      if(item?.college_fee)
+        clg += item.college_fee;
   });
   worksheet.mergeCells("A2:C2");
   worksheet.addRow([]);
   worksheet.getCell("A2").value = "TOTAL MONEY CREDITED : ";
-  worksheet.getRow(1).height = 35;
-  worksheet.getRow(2).height = 28;
-  worksheet.getCell("A2").font = { size: 20,  name: "Bahnschrift Condensed" };
+  worksheet.getCell("A2").height = 30;
+  worksheet.getCell("A2").font = { size: 22,  name: "Bahnschrift Condensed" };
   worksheet.getCell("A2").alignment = { horizontal: "right", vertical: "middle" };
   worksheet.getCell("D2").value = tmc;
   worksheet.getCell("D2").numFmt = '#,##0'
-  worksheet.getCell("D2").font = { size: 20,  name: "Bahnschrift Condensed" };
+  worksheet.getCell("D2").height = 30;
+  worksheet.getCell("D2").font = { size: 22,  name: "Bahnschrift Condensed" };
   worksheet.getCell("D2").alignment = { horizontal: "left", vertical: "middle" };
 
   worksheet.mergeCells("A3:C3");
   worksheet.getCell("A3").value = "TOTAL USAGE : ";
-  worksheet.getRow(1).height = 35;
-  worksheet.getRow(2).height = 28;
-  worksheet.getCell("A3").font = { size: 20,  name: "Bahnschrift Condensed" };
+  worksheet.getCell("A3").height = 30;
+  worksheet.getCell("A3").font = { size: 22,  name: "Bahnschrift Condensed" };
   worksheet.getCell("A3").alignment = { horizontal: "right", vertical: "middle" };
   worksheet.getCell("D3").value = tu;
   worksheet.getCell("D3").numFmt = '#,##0'
-  worksheet.getCell("D3").font = { size: 20,  name: "Bahnschrift Condensed" };
+  worksheet.getCell("D3").height = 30;
+  worksheet.getCell("D3").font = { size: 22,  name: "Bahnschrift Condensed" };
   worksheet.getCell("D3").alignment = { horizontal: "left", vertical: "middle" };
 
 
@@ -63,13 +65,12 @@ const addRegisterPage = (workbook, register) => {
   const headerRow = worksheet.addRow(headers);
 
   // // Style headers
-  headerRow.font = { color: { argb: "FFFFFFFF" }, size : 20 };
   headerRow.eachCell(cell=>{
-      cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFF6600" } };
-      cell.font = { size: 20,  name: "Bahnschrift Condensed" };
+      cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF70AD47" } };
+      cell.font = { size: 20,  name: "Bahnschrift Condensed", color: { argb: "FFFFFFFF" } };
   })
-  headerRow.alignment = { horizontal: "center", vertical: "middle" };
   headerRow.height = 30;
+  headerRow.alignment = { horizontal: "center", vertical: "middle" };
 
   register.forEach((transaction) => {
     const row = worksheet.addRow([
@@ -82,7 +83,7 @@ const addRegisterPage = (workbook, register) => {
     ]);
     row?.eachCell((cell, colIndex) => {
       cell.border = {
-        top: { style: "thin" },
+        // top: { style: "thin" },
         left: { style: "thin" },
         bottom: { style: "thin" },
         right: { style: "thin" },
@@ -103,8 +104,8 @@ const addRegisterPage = (workbook, register) => {
     { width: 17 }, // D
     { width: 17 }, // E
     { width: 17 },  // F
-    { width: 8 },  // G
-    { width: 8 },  // H
+    { width: 6 },  // G
+    { width: 6 },  // H
     { width: 20 },  // I
     { width: 15 },  // J
     { width: 15 },  // K
@@ -113,14 +114,15 @@ const addRegisterPage = (workbook, register) => {
   worksheet.mergeCells("I5:K5");
   const catCell = worksheet.getCell("I5");
   catCell.value = "CATEGORICAL DATA";
+  catCell.height = 30;
   catCell.font = { size: 20 , color: { argb: "ffffffff" },  name: "Bahnschrift Condensed" };
   catCell.alignment = { horizontal: "center", vertical: "middle" };
   catCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "00000000" } };
 
   const catData = {
-      "MY USAGE : " : tu - total_hostel_fee,
+      "MY USAGE : " : tu - total_hostel_fee - clg,
       "TOTAL HOSTEL FEE : " : 36000 + total_hostel_fee,
-      "COLLEGE FEE : " : 50000 + 355059,
+      "COLLEGE FEE : " : 50000 + 355059 + clg,
       "LAPTOP" : 50000,
       "NET AMOUNT PAID : " : tu + 491059,
   }
@@ -130,11 +132,26 @@ const addRegisterPage = (workbook, register) => {
       worksheet.mergeCells(`I${iterater}:J${iterater}`);
       vlaueCells.value = key;
       vlaueCells.font = { size: 20 , color: { argb: "00000000" },  name: "Bahnschrift Condensed" };
+      vlaueCells.height = 28;
       vlaueCells.alignment = { horizontal: "right", vertical: "middle" };
+      vlaueCells.border = {
+        // top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
       const kCell = worksheet.getCell("K"+iterater);
       kCell.value = catData[key];
       kCell.font = { size: 20 , color: { argb: "00000000" },  name: "Bahnschrift Condensed" };
       kCell.numFmt = '#,##0'
+      kCell.height = 28;
+      kCell.alignment = { horizontal: "left", vertical: "middle" };
+      kCell.border = {
+        // top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
       iterater++;
   }
   iterater += 3;
@@ -143,6 +160,7 @@ const addRegisterPage = (workbook, register) => {
   const annuval = worksheet.getCell("I"+iterater++);
   annuval.value = "ANNUAL SPENT MONEY";
   annuval.font = { size: 20 , color: { argb: "ffffffff" }, name: "Bahnschrift Condensed" };
+  annuval.height = 30;
   annuval.alignment = { horizontal: "center", vertical: "middle" };
   annuval.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "00000000" } };
 
@@ -158,14 +176,29 @@ const addRegisterPage = (workbook, register) => {
       worksheet.mergeCells(`I${iterater}:J${iterater}`);
       vlaueCells.value = key;
       vlaueCells.font = { size: 20 , color: { argb: "00000000" },  name: "Bahnschrift Condensed" };
+      vlaueCells.height = 28;
       vlaueCells.alignment = { horizontal: "right", vertical: "middle" };
+      vlaueCells.border = {
+        // top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
 
       const kCell = worksheet.getCell("K"+iterater);
       kCell.value = asm[key];
       kCell.font = { size: 20 , color: { argb: "00000000" },  name: "Bahnschrift Condensed" };
       kCell.numFmt = '#,##0'
+      kCell.alignment = { horizontal: "left", vertical: "middle" };
+      kCell.height = 28;
+      kCell.border = {
+        // top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
       iterater++;
-  }
+    }
 
   return workbook;
 }
@@ -242,12 +275,12 @@ export const downloadExcel = async () => {
           transaction.balance,
         ]);
         row.eachCell((cell, colIndex) => {
-          if (colIndex === 1 && transaction.description.includes("Money Credited")) {
-            cell.font = { color: { argb: "FFFF0000" } }; // Highlight "Money Credited" in red
-          }
+          // if (colIndex === 1 && transaction.description.includes("Money Credited")) {
+          //   cell.font = { color: { argb: "FFFF0000" } }; // Highlight "Money Credited" in red
+          // }
 
           cell.border = {
-            top: { style: "thin" },
+            // top: { style: "thin" },
             left: { style: "thin" },
             bottom: { style: "thin" },
             right: { style: "thin" },

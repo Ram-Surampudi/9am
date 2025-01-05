@@ -5,6 +5,7 @@ const money_register = new mongoose.Schema({
   month : { type: Number, required: true }, 
   money_credited : { type: Number }, 
   hostel_fee :{ type: Number},
+  college_fee : { type: Number, default: 0 } ,
   usage : { type: Number}  ,
   balance : {type : Number}
 });
