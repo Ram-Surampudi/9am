@@ -83,6 +83,8 @@ const Register = async (record) =>{
         await MoneyRegister.bulkWrite(operations);
     }
 
+    let oldRecordBalance = record.balance;
+
     if(transactions.length > 0){
         transactions[0].balance = ((transactions[0]?.credit || 0) + prevBalance ) - transactions[0]?.debit || 0; 
     }
@@ -93,7 +95,7 @@ const Register = async (record) =>{
     record.balance = transactions[transactions.length-1].balance;
     await record.save();
 
-    if(index < reg.length -1){
+    if(index < reg.length -1 && oldRecordBalance !== record.balance){
         var newRecords = await Records.find();
 
         newRecords.sort((a,b)=>{
