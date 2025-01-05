@@ -103,8 +103,8 @@ const addRegisterPage = (workbook, register) => {
     { width: 17 }, // D
     { width: 17 }, // E
     { width: 17 },  // F
-    { width: 17 },  // G
-    { width: 17 },  // H
+    { width: 8 },  // G
+    { width: 8 },  // H
     { width: 20 },  // I
     { width: 15 },  // J
     { width: 15 },  // K
@@ -120,8 +120,9 @@ const addRegisterPage = (workbook, register) => {
   const catData = {
       "MY USAGE : " : tu - total_hostel_fee,
       "TOTAL HOSTEL FEE : " : 36000 + total_hostel_fee,
+      "COLLEGE FEE : " : 50000 + 355059,
       "LAPTOP" : 50000,
-      "NET AMOUNT PAID : " : tu + 36000 + 50000,
+      "NET AMOUNT PAID : " : tu + 491059,
   }
   let iterater  = 6;
   for(const key in catData){
