@@ -39,6 +39,11 @@ const EditableTable = () => {
   const calculateBalance = (row , index) =>{
       row.balance = (index ===0 ? balance : data[index-1].balance) - (parseInt(row?.debit) || 0) + (parseInt(row?.credit) || 0);
   };
+
+  const formateDate = date => {
+    let d = new Date(date);
+    return String(d.getDate()).padStart(2, '0')+ '-' + d.getMonth() + '-'+ d.getFullYear();
+  }
   
   const handleInsert = (e) => {
     setLoading(true);
@@ -118,10 +123,6 @@ const EditableTable = () => {
       setData(res?.data?.transactions); 
       setTotal(res?.data?.transactions?.reduce((tot, current)=>tot+current.debit, 0));
       balance = res?.data?.balance;
-      console.log(balance);
-      
-      console.log(total);
-      
    }
    catch(error){
     console.log(error);
@@ -201,7 +202,7 @@ const EditableTable = () => {
           {data?.map((row, index) => (
             editRowId !== row._id ?
             <tr key={row._id}>
-              <td>{String(new Date(row.date).getDate()).padStart(2, '0')+ '-' + month + '-'+ year}</td>
+              <td>{formateDate(row.date)}</td>
               <td>{row.description}</td>
               <td>{row.quantity}</td>
               <td>{row.credit?.toLocaleString('en-US')}</td>
@@ -214,7 +215,7 @@ const EditableTable = () => {
               </td>
             </tr> 
             : <tr key={row._id} >
-                <td> <input className="tableinput" type="date" name="date" value={newRow.date} onChange={handleInputChange}/> </td>
+                <td> <input className="tableinput" type="date" name="date" value={new Date(newRow.date)} onChange={handleInputChange}/> </td>
                 <td> <input className="tableinput" type="text" name="description" value={newRow.description} onChange={handleInputChange }/> </td>
                 <td> <input className="tableinput" type="text" name="quantity" value={newRow.quantity} onChange={handleInputChange}/> </td>
                 <td> <input className="tableinput" type="number" name="credit" value={newRow.credit} onChange={handleInputChange}/> </td>

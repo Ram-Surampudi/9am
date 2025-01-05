@@ -13,6 +13,11 @@ const Records = () => {
     const [total, setTotal] = useState(0);
     const [loading , setLoading] = useState(false);
 
+    const formateDate = date => {
+      let d = new Date(date);
+      return String(d.getDate()).padStart(2, '0')+ '-' + d.getMonth() + '-'+ d.getFullYear();
+    }
+
     const getValue = value => value < 1 ? '-' : value?.toLocaleString('en-US') || '-';
 
     useEffect(()=>{
@@ -23,11 +28,8 @@ const Records = () => {
       setLoading(true);
       try{
         const res = await axios.post(`${URL}query`,{month,year});
-        console.log(res);
         setData(res.data.transactions);
-        setTotal(res.data.transactions.reduce((tot, current)=>tot+current.debit, 0));
-        console.log();
-        
+        setTotal(res.data.transactions.reduce((tot, current)=>tot+current.debit, 0)); 
      }
      catch(error){
         setData(null);
@@ -88,7 +90,7 @@ const Records = () => {
         <tbody>
       {data.map(e=>(
             <tr key={e._id}>
-                <td>{String(new Date(e.date).getDate()).padStart(2, '0')+ '-' + month + '-'+ year}</td>
+                <td>{formateDate(e.date)}</td>
                 <td>{e.description}</td>
                 <td>{getValue(e.quantity)}</td>
                 <td>{getValue(e.credit)}</td>
