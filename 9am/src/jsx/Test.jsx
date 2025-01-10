@@ -215,7 +215,7 @@ const EditableTable = () => {
               </td>
             </tr> 
             : <tr key={row._id} >
-                <td> <input className="tableinput" type="date" name="date" value={new Date(newRow.date)} onChange={handleInputChange}/> </td>
+                <td> <input className="tableinput" type="date" name="date" value={newRow.date} onChange={handleInputChange}/> </td>
                 <td> <input className="tableinput" type="text" name="description" value={newRow.description} onChange={handleInputChange }/> </td>
                 <td> <input className="tableinput" type="text" name="quantity" value={newRow.quantity} onChange={handleInputChange}/> </td>
                 <td> <input className="tableinput" type="number" name="credit" value={newRow.credit} onChange={handleInputChange}/> </td>
