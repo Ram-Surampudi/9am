@@ -20,7 +20,7 @@ const Admin = () => {
       const res = await axios.post(`${URL}adminlogin`,data);
       if(res?.data)
         localStorage.setItem("token", res.data);
-      navigate('/admin/home');
+      navigate('/admin/test');
    }
    catch(error){
     console.log(error);
